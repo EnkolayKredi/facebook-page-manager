@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript">
+var phone="phone";
+var general_info="general_info";
+var about="about";
+var bio="bio";
+var emails="emails";
+var website="website";
+var description="description";
+var pageAccessToken="pageAccessToken";
+var pageID="pageID";
+</script>
+
+	<title>Update You Facebook Page Details</title>
+</head>
+<body>
+<br><br><br>
+<center>
+<h2>Enter Page Details</h2>
+
+<br><br><input type="text" id="pageID" placeholder="page ID" />
+<br><br><input type="text" id="pageAccessToken" placeholder="pageAccessToken" />
+
+<h2>Update Details</h2>
+<div class="container" style="width:70%">
+<br><br><input type="text" id="phone" placeholder="Phone" />&nbsp;<input type="button" class = "btn btn-primary btn-sm" onclick="postdata(phone)" value="Update Phone"/>
+<br><br><input type="text" id="general_info" placeholder="General Information" />&nbsp;<input type="button" class = "btn btn-primary btn-sm" onclick="postdata(general_info)" value="Update General Info"/>
+<br><br><input type="text" id="about" placeholder="About"/>&nbsp;<input type="button" class = "btn btn-primary btn-sm" onclick="postdata(about)" value="Update About"/>
+<br><br><input type="text" id="bio" placeholder="Bio"/>&nbsp;<input type="button" class = "btn btn-primary btn-sm" onclick="postdata(bio)" value="Update Bio"/>
+<br><br><input type="text" id="emails" placeholder="Email"/>&nbsp;<input type="button" class = "btn btn-primary btn-sm" onclick="postdata(emails)" value="Update Email"/>
+<br><br><input type="text" id="website" placeholder="Website"/>&nbsp;<input type="button" class = "btn btn-primary btn-sm" onclick="postdata(website)" value="Update Website"/>
+<br><br><input type="text" id="description" placeholder="Description"/>&nbsp;<input type="button" class = "btn btn-primary btn-sm" onclick="postdata(description)" value="Update Description"/>
+
+
+<br><br><input type="button" class = "btn btn-primary btn-sm" onclick="getdata()" value="Get Page Data"/>
+<br><br><font face="calibri" size=3><div id="message"></div></font><br><br>
+</center>
+
+</div>
+
+</body>
+<script type="text/javascript">
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+function validateURL(website) {
+
+var re = /^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/;
+return re.test(website);
+}
+function postdata(data)
+{
+	var k=0;
+	if(!document.getElementById(pageID).value || !document.getElementById(pageAccessToken).value)document.getElementById("message").innerHTML ="Please Enter the Page ID & Access Token!";
+	else
+	{
+		if((!document.getElementById(data).value))document.getElementById("message").innerHTML ="Please Enter the data!";
+		else
+		{	
+			if(data=="phone")
+			{	
+				if(document.getElementById(data).value.length==10 && !isNaN(document.getElementById(data).value))
+				{
+					var param="fieldProperty="+data+"&fieldPropertyValue="+document.getElementById(data).value+"&pageAccessToken="+document.getElementById(pageAccessToken).value+"&pageID="+document.getElementById(pageID).value;
+					k=1;
+				}
+				else
+				{
+					document.getElementById("message").innerHTML ="Please Enter a Valid phone Number(10 digits)";
+				}
+			}
+			else if(data=="emails")
+			{	
+				if(validateEmail(document.getElementById(data).value))
+				{
+					var param="fieldProperty="+data+"&fieldPropertyValue="+document.getElementById(data).value+"&pageAccessToken="+document.getElementById(pageAccessToken).value+"&pageID="+document.getElementById(pageID).value;
+					k=1;
+				}
+				else
+				{
+					document.getElementById("message").innerHTML ="Please Enter a Valid Email ID";
+				}
+			}
+			else if(data=="website")
+			{	
+				if(validateURL(document.getElementById(data).value))
+				{
+					var param="fieldProperty="+data+"&fieldPropertyValue="+document.getElementById(data).value+"&pageAccessToken="+document.getElementById(pageAccessToken).value+"&pageID="+document.getElementById(pageID).value;
+					k=1;
+				}
+				else
+				{
+					document.getElementById("message").innerHTML ="Please Enter a Valid Website Address";
+				}
+			}
+			else
+			{
+				var param="fieldProperty="+data+"&fieldPropertyValue="+document.getElementById(data).value+"&pageAccessToken="+document.getElementById(pageAccessToken).value+"&pageID="+document.getElementById(pageID).value;
+				k=1;
+			}
+			if(k)
+			{
+				document.getElementById("message").innerHTML="Please wait. Updating the Page field "+data+"..";
+				var param="fieldProperty="+data+"&fieldPropertyValue="+document.getElementById(data).value+"&pageAccessToken="+document.getElementById(pageAccessToken).value+"&pageID="+document.getElementById(pageID).value;
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+				  console.log(this.responseText);
+				  if(this.responseText=="failure")
+				  {
+				  	document.getElementById("message").innerHTML ="Some Error Occurred, Check if Access Token is Correct";
+				  }
+				  else
+				  {
+				  var obj = JSON.parse(this.responseText);
+				  if(obj.success==true)
+					document.getElementById("message").innerHTML ="Successfully Updated";
+				  else
+				  	document.getElementById("message").innerHTML ="Some Error Occurred, Check if Access Token is Correct";
+				  }
+				}
+				};
+				xhttp.open("POST", "/post_data", true);
+				xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhttp.send(param);
+			}
+		}
+	}
+}
+
+function getdata()
+{
+	if(!document.getElementById(pageID).value || !document.getElementById(pageAccessToken).value)document.getElementById("message").innerHTML ="Please Enter the Page ID & Access Token!";
+	else
+	{
+		document.getElementById("message").innerHTML="Please wait. Getting the Response - GetPageData..";
+		var param="pageAccessToken="+document.getElementById(pageAccessToken).value+"&pageID="+document.getElementById(pageID).value;
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+		  console.log(this.responseText);
+		  try{
+		  var obj = JSON.parse(this.responseText);
+		  document.getElementById("message").innerHTML ="Name : "+obj.name+" <br>"+"Category : "+obj.category+" <br>"+"Website : "+obj.website+" <br>"+"Phone : "+obj.phone+" <br>"+"General Info : "+obj.general_info+" <br>"+"About : "+obj.about+" <br>"+" <br>"+"Description : "+obj.description+" <br>"+"Email : "+obj.emails+" <br>";
+			}
+			catch(e){
+				document.getElementById("message").innerHTML="There was an error fetching the data (Please Enter the correct page access token & ID) : "+e.message;
+			}
+		}
+		};
+		xhttp.open("POST", "/get_data", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send(param);
+	}
+}
+
+</script>
+</html>
