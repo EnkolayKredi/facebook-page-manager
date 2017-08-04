@@ -1,4 +1,4 @@
-# facebookmanager
+# Facebook Page Manager
 
 A web application to manage all your Facebook Pages, Edit information and get Details.
 
